@@ -1,7 +1,4 @@
 #Импортируем библиотеки
-import pytest
-from selenium import webdriver
-import time
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -22,23 +19,23 @@ def generate_pass(nletters:int,ndigits:int):
 
 mail = generate_mail()
 password = generate_pass(5,4)
+link = 'http://selenium1py.pythonanywhere.com/ru/'
 
-'''
-Тест №1 Регистрация на сайте
-1. Перейти по адресу http://selenium1py.pythonanywhere.com/ru/
-2. Найти элемент a#login_link и перейти по нему
-3. Заполнить поле #id_registration-email валидным e-mail
-4. Заполнить поле #id_registration-password1 паролем
-(9 символов хотя бы одна цифра и хотя бы одна буква)
-5. Повторить пароль в поле #id_registration-password2
-6. Выбрать кнопку form#register_form button[name='registration_submit']
-и кликнуть
-7. Удостовериться что появилось сообщение 'Спасибо за регистрацию!'
-'''
+def test_registration(browser, link):
 
-def test_registration():
-    browser = webdriver.Chrome()
-    browser.get('http://selenium1py.pythonanywhere.com/ru/')
+    '''
+    Тест №1 Регистрация на сайте
+    1. Перейти по адресу http://selenium1py.pythonanywhere.com/ru/
+    2. Найти элемент a#login_link и перейти по нему
+    3. Заполнить поле #id_registration-email валидным e-mail
+    4. Заполнить поле #id_registration-password1 паролем
+    (9 символов хотя бы одна цифра и хотя бы одна буква)
+    5. Повторить пароль в поле #id_registration-password2
+    6. Выбрать кнопку form#register_form button[name='registration_submit']
+    и кликнуть
+    7. Удостовериться что появилось сообщение 'Спасибо за регистрацию!'
+    '''
+    browser.get(link)
 
     l_link = browser.find_element_by_css_selector('a#login_link')
     l_link.click()
