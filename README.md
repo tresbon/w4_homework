@@ -1,0 +1,1 @@
+# Week 4 homeworkconftest.py - pytest configtest_laguage_switch.py - Test of switching language fixture and configtest_user_registration.py - User reg test made by handtest_user_registration_ide.py - Same test made by IDE
