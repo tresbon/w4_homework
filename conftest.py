@@ -1,8 +1,22 @@
 import pytest
+from lxml import etree
+import re
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.support.ui import Select
 
-laguages_list = ['ru', 'en', 'fr', 'es'] #Дописать парсер языков
+def get_langs():
+    '''Get list of langs'''
+    root = etree.fromstring(request('GET',\
+        'http://selenium1py.pythonanywhere.com/sitemap.xml'\
+            ).content)
+    langs = [re.search('(\w){2}(?=.xml)', i[0].text,\
+        re.IGNORECASE).group() \
+        for i in root if \
+        re.search('(\w){2}(?=.xml)', i[0].text, re.IGNORECASE)]
+    return list(set(langs))
+
+laguages_list = get_langs() 
 
 def pytest_addoption(parser):
     parser.addoption('--browser_name', action='store', default='chrome',
