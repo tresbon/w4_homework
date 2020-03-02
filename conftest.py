@@ -54,4 +54,4 @@ def lang(request):
     if lang in laguages_list:
         return lang
     else:
-        return f'Should by one of {laguages_list}'
+        return f'--language should by one of {laguages_list}'
