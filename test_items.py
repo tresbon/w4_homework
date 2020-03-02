@@ -12,7 +12,7 @@ def get_goods_from_sitemap(lang):
             ).content)
     products_sitemap = [i[0].text.replace('example.com',\
         'selenium1py.pythonanywhere.com') for i in root
-        if f'products-{lang}.' in i]
+        if f'products-{lang}.' in i][0]
     root = etree.fromstring(request('GET',\
         products_sitemap).content)
     goods_links = [i[0].text.replace('example.com',\
