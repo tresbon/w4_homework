@@ -14,9 +14,9 @@ def get_langs():
         re.IGNORECASE).group() \
         for i in root if \
         re.search('(\w){2}(?=.xml)', i[0].text, re.IGNORECASE)]
-    return list(set(langs))
-
-laguages_list = get_langs() 
+    langs = list(set(langs))
+    langs.sort()
+    return langs
 
 def pytest_addoption(parser):
     parser.addoption('--browser_name', action='store', default='chrome',
