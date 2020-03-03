@@ -60,7 +60,7 @@ def test_random_product_has_order_button(browser,lang):
 
     assert browser.find_elements(By.CSS_SELECTOR, \
     'div.basket-mini a.btn'), f'''Product {good} hasnt
-    clickable url'''
+    clickable button'''
 
 def test_order_with_lang(browser,lang):
     '''
