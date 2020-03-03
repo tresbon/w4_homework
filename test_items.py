@@ -26,28 +26,75 @@ def get_goods_from_sitemap(lang):
     return goods_links
 
 
-def choose_clickable_good(browser, goods_links):
+def choose_clickable_good(browser, goods_links,\
+    recurtion = False):
 
-    '''Recusrively chooses clickable good'''
+    '''Chooses random good'''
 
     good = choice(goods_links)
 
-    browser.get(good)
+    if recurtion:
+        browser.get(good)
 
-    if not browser.find_elements(By.CSS_SELECTOR, \
-    'button.btn-add-to-basket'):
+        #If no button in good - start recursion
+        if not browser.find_elements(By.CSS_SELECTOR, \
+        'button.btn-add-to-basket'):
 
-        choose_clickable_good(browser, goods_links)
+            choose_clickable_good(browser, goods_links, True)
 
     return good
 
-def test_order_button_with_lang(browser,lang):
-
+def test_random_product_has_order_button(browser,lang):
+    '''
+    Тест - у товара есть кнопка добавления
+    1. Перейти в случайный товар с учётом языка
+    2. Выбрать случайный товар
+    3. Проверить что у товара есть кнопка'''
+    
+    #Выбираем случайный товар
     goods_links = get_goods_from_sitemap(lang)
-
     good = choose_clickable_good(browser, goods_links)
 
+    #Переходим на страницу товара
     browser.get(good)
 
     assert browser.find_elements(By.CSS_SELECTOR, \
-    'button.btn-add-to-basket'), f'For lang {lang} clickable good wasn`t found'
+    'div.basket-mini a.btn'), f'''Product {good} hasnt
+    clickable url'''
+
+def test_order_with_lang(browser,lang):
+    '''
+    Тест что товар добавляется в корзину
+    1. Перейти в случайный товар с учётом языка
+    2. Выбрать случайный товар
+    3. Добавить в корзину
+    4. Перейти в корзину
+    5. Проверить что товар появился в корзине (
+        ссыка на товар есть среди ссылок на
+        товары в корзине
+    )
+    '''
+    
+    #Выбираем случайный товар
+    goods_links = get_goods_from_sitemap(lang)
+    good = choose_clickable_good(browser, goods_links)
+
+    #Переходим на страницу товара
+    browser.get(good)
+
+    #Добавляем товар в корзину
+    browser.find_element(By.CSS_SELECTOR, \
+    'button.btn-add-to-basket').click()
+
+    #Переходим в корзину
+    browser.find_element(By.CSS_SELECTOR, \
+        'div.basket-mini a.btn').click()
+
+    #Собираем ссылки на товары добавленные в корзину
+    basket_links = browser.find_elements(By.CSS_SELECTOR, \
+        '.basket-items a')
+    basket_links = [i.get_attribute('href') for i in \
+        basket_links]
+    
+    assert good in basket_links, f'''Product {good} addable
+    to basket'''
