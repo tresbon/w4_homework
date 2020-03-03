@@ -62,7 +62,9 @@ def test_random_product_has_order_button(browser,lang):
     'div.basket-mini a.btn'), f'''Product {good} hasnt
     clickable button'''
 
-def test_order_with_lang(browser,lang):
+
+#Тест короткий и скучный, поэтому я написал ещё
+def test_random_product_is_orderable(browser,lang):
     '''
     Тест что товар добавляется в корзину
     1. Перейти в случайный товар с учётом языка
@@ -77,7 +79,7 @@ def test_order_with_lang(browser,lang):
     
     #Выбираем случайный товар
     goods_links = get_goods_from_sitemap(lang)
-    good = choose_clickable_good(browser, goods_links)
+    good = choose_clickable_good(browser, goods_links,True)
 
     #Переходим на страницу товара
     browser.get(good)
